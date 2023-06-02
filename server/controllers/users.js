@@ -11,9 +11,9 @@ router.get("/users", (req, res) => {
 });
 
 router.post("/signup", (req, res, next) => {
-  const { email, userName, bio, password, passwordCheck } = req.body;
+  const { email, displayName, bio, password, passwordCheck } = req.body;
 
-  if (!email || !userName || !password || !passwordCheck) {
+  if (!email || !displayName || !password || !passwordCheck) {
     return res
       .status(400)
       .json({ error: "Email, user name, or password is missing" });
@@ -36,11 +36,11 @@ router.post("/signup", (req, res, next) => {
         .json({ error: "Password must be at least 8 characters long" });
     }
 
-    return createUser(email, userName, bio, password).then((result) => {
+    return createUser(email, displayName, bio, password).then((result) => {
       const newUser = {
         id: result.rows[0].id,
         email,
-        userName,
+        displayName,
         bio,
       };
       res.status(201).json(newUser);
@@ -50,7 +50,7 @@ router.post("/signup", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-
+  
   if (!email || !password) {
     return res.status(400).json({ error: "Email or password is missing" });
   }

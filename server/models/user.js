@@ -9,10 +9,10 @@ const getAllusers = () => {
   return db.query("SELECT * FROM users;").then((result) => result.rows);
 };
 
-const createUser = (email, userName, bio, password) => {
+const createUser = (email, displayName, bio, password) => {
   const password_hash = generateHash(password);
-  const sql = `INSERT INTO users (email, user_name, bio, password_hash) VALUES ($1, $2, $3, $4) RETURNING id; `;
-  return db.query(sql, [email, userName, bio, password_hash]);
+  const sql = `INSERT INTO users (email, display_name, bio, password_hash) VALUES ($1, $2, $3, $4) RETURNING id; `;
+  return db.query(sql, [email, displayName, bio, password_hash]);
 };
 
 const getUserByEmail = (email) => {
