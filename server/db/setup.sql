@@ -1,0 +1,42 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS playlist CASCADE;
+DROP TABLE IF EXISTS friends CASCADE;
+
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+email VARCHAR (254) NOT NULL,
+user_name VARCHAR (254) NOT NULL,
+bio TEXT,
+password_hash TEXT NOT NULL
+);
+
+CREATE TABLE playlist (
+  id SERIAL PRIMARY KEY,
+  artist VARCHAR(254) NOT NULL,
+  song_name VARCHAR(254) NOT NULL,
+  album_img TEXT NOT NULL,
+  user_id INT,
+  
+  CONSTRAINT fk_playlist_users
+    FOREIGN KEY(user_id)
+    REFERENCES users(id)
+);
+
+CREATE TABLE friends (
+  id SERIAL PRIMARY KEY,
+  user_name VARCHAR (254) NOT NULL,
+  user_id INT,
+  
+  CONSTRAINT fk_friends_users
+    FOREIGN KEY(user_id)
+    REFERENCES users(id) ON DELETE CASCADE
+);  
+
+
+TRUNCATE TABLE users CASCADE;
+TRUNCATE TABLE playlist CASCADE;
+TRUNCATE TABLE friends CASCADE;
+
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+ALTER SEQUENCE playlist_id_seq RESTART WITH 1;
+ALTER SEQUENCE friends_id_seq RESTART WITH 1;
