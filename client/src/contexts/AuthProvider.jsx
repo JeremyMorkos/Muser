@@ -10,6 +10,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const loginCheck = async () => {
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(fields),
     })
     const data = await res.json();
-    if (res.status !== 200) {
+    if (res.status !== 201) {
       throw {
         status: res.status,
         message: data.message,
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     console.log(data)
     setUser(data);
     setIsLoadingUser(false)
-    navigate('/home')
+    navigate('/')
   };
 
 

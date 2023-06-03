@@ -12,19 +12,17 @@ router.get("/:userId", (req, res) => {
 router.post("/", (req, res) => {
   const userId = req.session.user.id;
   const { spotifyId, artist, songName, albumImg } = req.body;
-  return addSong(userId, spotifyId, artist, songName, albumImg).then(
-    (result) => {
-      console.log(result);
-      const newSong = {
-        userId: result.rows,
-        spotifyId,
-        artist,
-        songName,
-        albumImg,
-      };
-      res.status(201).json(newSong);
-    }
-  );
+  return addSong(userId, spotifyId, artist, songName, albumImg).then(() => {
+    const newSong = {
+      userId,
+      spotifyId,
+      artist,
+      songName,
+      albumImg,
+    };
+    res.status(201).json(newSong);
+    console.log(newSong);
+  });
 });
 
 router.delete("/:id", (req, res) => {

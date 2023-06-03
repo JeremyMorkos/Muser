@@ -6,10 +6,10 @@ const getSongsByUserId = (userId) => {
     .then((result) => result.rows);
 };
 
-const addSong = (userId, spotify_id, artist, songName, albumImg) => {
+const addSong = (id, spotifyId, artist, songName, albumImg) => {
   const sql = `INSERT INTO songs (user_id, spotify_id, artist, song_name, album_img) VALUES ($1, $2, $3, $4, $5) RETURNING id;`;
   return db
-    .query(sql, [userId, spotify_id, artist, songName, albumImg])
+    .query(sql, [id, spotifyId, artist, songName, albumImg])
     .then((result) => result.rows[0]);
 };
 

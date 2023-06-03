@@ -21,12 +21,27 @@ const Home = () => {
       const response = await fetch(`/api/search?q=${searchInput}`);
       const data = await response.json();
       setSearchData(data);
+      console.log(data)
     } catch (error) {
       console.error(error);
     }
   };
 
-  console.log(user)
+  const handleAdd = async () => {
+    try {
+      const response = await fetch("/api/songs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(),
+      });
+     
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <>
@@ -54,6 +69,7 @@ const Home = () => {
               <div>
                 <p>{item.song_name}</p>
                 <p>{item.artist}</p>
+                <button onClick={handleAdd}> add </button>
               </div>
             </li>
           ))}
