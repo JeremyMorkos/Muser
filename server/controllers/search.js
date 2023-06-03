@@ -46,6 +46,5 @@ router.get("/search", async (req, res) => {
 });
 
   // Keep the output of this endpoint consistent with the proposed output of /songs
-
-
 module.exports = router;
+

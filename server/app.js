@@ -12,6 +12,7 @@ app.use(express.json());
 const usersController = require("./controllers/users");
 const songsController = require("./controllers/songs");
 const searchController = require("./controllers/search");
+const friendsController = require("./controllers/friends");
 
 app.use(
   session({
@@ -28,6 +29,7 @@ app.use(
 app.use("/api", usersController);
 app.use("/api", songsController);
 app.use("/api", searchController);
+app.use("/api", friendsController);
 
 app.listen(PORT, () => {
   console.log(`server is listening on port:${PORT}`);

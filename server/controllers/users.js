@@ -1,8 +1,15 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const { getAllusers, createUser, getUserByEmail } = require("../models/user");
-
+const {
+  getAllusers,
+  createUser,
+  getUserByEmail,
+  updateUserEmail,
+  updateUserDisplayName,
+  updateUserBio,
+  updateUserPassword,
+} = require("../models/user");
 
 router.get("/users", (req, res) => {
   return getAllusers().then((users) => {
@@ -48,9 +55,64 @@ router.post("/signup", (req, res, next) => {
   });
 });
 
+router.put("/profile", (req, res, next) => {
+  const id = req.session.user.id;
+  const { email, displayName, bio, password, passwordCheck } = req.body;
+
+
+  if (email) {
+    return updateUserEmail(id, email)
+      .then(() => {
+        res.json({ message: "Email updated successfully" });
+      })
+      .catch((err) => {
+        res.status(500).send("Error updating email");
+      });
+  }
+
+
+  if (displayName) {
+    return updateUserDisplayName(id, displayName)
+      .then(() => {
+        res.json({ message: "Display name updated successfully" });
+      })
+      .catch((err) => {
+        res.status(500).send("Error updating display name");
+      });
+  }
+
+
+  if (bio) {
+    return updateUserBio(id, bio)
+      .then(() => {
+        res.json({ message: "Bio updated successfully" });
+      })
+      .catch((err) => {
+        res.status(500).send("Error updating bio");
+      });
+  }
+
+
+  if (password) {
+    if (password !== passwordCheck) {
+      return res.status(400).json({ error: "Password does not match" });
+    }
+    return updateUserPassword(id, password)
+      .then(() => {
+        res.json({ message: "Password updated successfully" });
+      })
+      .catch((err) => {
+        res.status(500).send("Error updating password");
+      });
+  }
+
+  res.status(400).send("No valid fields provided for update");
+});
+
+
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-  
+
   if (!email || !password) {
     return res.status(400).json({ error: "Email or password is missing" });
   }
@@ -90,6 +152,5 @@ router.delete("/login", (req, res) => {
     res.json({ message: "logged out" });
   });
 });
-
 
 module.exports = router;
