@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { getSongsByUserId, addSong, deleteSong } = require("../models/song");
 
-router.get("/songs/:userId", (req, res) => {
+router.get("/:userId", (req, res) => {
   const userId = Number(req.params.userId);
   return getSongsByUserId(userId).then((songs) => {
     res.json(songs);
   });
 });
 
-router.post("/songs", (req, res) => {
+router.post("/", (req, res) => {
   const userId = req.session.user.id;
   const { spotifyId, artist, songName, albumImg } = req.body;
   return addSong(userId, spotifyId, artist, songName, albumImg).then(
@@ -27,7 +27,7 @@ router.post("/songs", (req, res) => {
   );
 });
 
-router.delete("/songs/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
   return deleteSong(id)
     .then((result) => {

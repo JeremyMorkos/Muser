@@ -1,14 +1,17 @@
 require("dotenv").config();
-const express = require("express");
 
+const express = require("express");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 
 const db = require("./db/index");
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(express.json());
 
+const logger = require('./middleware/httpLogger')
+const errorHandler = require('./middleware/httpLogger')
+
+const sessionsController = require("./controllers/sessions")
 const usersController = require("./controllers/users");
 const songsController = require("./controllers/songs");
 const searchController = require("./controllers/search");
@@ -26,10 +29,16 @@ app.use(
   })
 );
 
-app.use("/api", usersController);
-app.use("/api", songsController);
-app.use("/api", searchController);
-app.use("/api", friendsController);
+app.use(express.json());
+app.use(express.static("client"));
+
+app.use(logger)
+app.use('/api/sessions', sessionsController)
+app.use("/api/users", usersController);
+app.use("/api/songs", songsController);
+app.use("/api/search", searchController);
+app.use("/api/friends", friendsController);
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.log(`server is listening on port:${PORT}`);

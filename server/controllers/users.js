@@ -11,13 +11,13 @@ const {
   updateUserPassword,
 } = require("../models/user");
 
-router.get("/users", (req, res) => {
+router.get("/", (req, res) => {
   return getAllusers().then((users) => {
     res.json(users);
   });
 });
 
-router.post("/signup", (req, res, next) => {
+router.post("/", (req, res, next) => {
   const { email, displayName, bio, password, passwordCheck } = req.body;
 
   if (!email || !displayName || !password || !passwordCheck) {
@@ -49,13 +49,14 @@ router.post("/signup", (req, res, next) => {
         email,
         displayName,
         bio,
+        password
       };
       res.status(201).json(newUser);
     });
   });
 });
 
-router.put("/profile", (req, res, next) => {
+router.put("/", (req, res, next) => {
   const id = req.session.user.id;
   const { email, displayName, bio, password, passwordCheck } = req.body;
 
@@ -109,48 +110,5 @@ router.put("/profile", (req, res, next) => {
   res.status(400).send("No valid fields provided for update");
 });
 
-
-router.post("/login", (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email or password is missing" });
-  }
-
-  return getUserByEmail(email)
-    .then((user) => {
-      if (!user) {
-        return res.status(400).json({ error: "Invalid email or password" });
-      }
-
-      const passwordMatch = bcrypt.compareSync(password, user.password_hash);
-
-      if (!passwordMatch) {
-        return res.status(400).json({ error: "Invalid email or password" });
-      }
-
-      delete user.password_hash;
-      req.session.user = user;
-      return res.json(user);
-    })
-    .catch((error) => {
-      next(error);
-    });
-});
-
-// check if user is still logged in
-router.get("/login", (req, res) => {
-  const { user } = req.session;
-  if (!user) {
-    return res.status(401).json({ message: "Not logged in" });
-  }
-  res.json({ user });
-});
-
-router.delete("/login", (req, res) => {
-  req.session.destroy(() => {
-    res.json({ message: "logged out" });
-  });
-});
 
 module.exports = router;
