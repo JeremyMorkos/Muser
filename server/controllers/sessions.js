@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
   });
 
   router.post("/", (req, res, next) => {
-    const { email, password } = req.body;
+    const { email, password, display_name } = req.body;
   
     if (!email || !password) {
       return res.status(400).json({ error: "Email or password is missing" });

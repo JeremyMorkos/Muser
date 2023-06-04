@@ -6,7 +6,7 @@ function generateHash(password) {
 }
 
 const getAllusers = () => {
-  return db.query("SELECT * FROM users;").then((result) => result.rows);
+  return db.query("SELECT * FROM users;").then((result) => result.rows[0]);
 };
 
 const createUser = (email, displayName, bio, password) => {

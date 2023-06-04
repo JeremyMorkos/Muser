@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
 import Logout from "./Logout";
 
-const Home = () => {
+const Home = ({setTracks, tracks}) => {
   const { user } = useAuth();
   const [category, setCategory] = useState("track");
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState([]);
+
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -21,26 +22,37 @@ const Home = () => {
       const response = await fetch(`/api/search?q=${searchInput}`);
       const data = await response.json();
       setSearchData(data);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleAdd = async () => {
+  const handleAdd = async (song) => {
     try {
+      console.log("Adding song:", song);
       const response = await fetch("/api/songs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(),
+        body: JSON.stringify({
+          ...song,
+          spotifyId: song.spotify_id,
+          artist: song.artist,
+          songName: song.song_name,
+          albumImg: song.album_img,
+        }),
       });
-     
+      const newSong = await response.json();
+      console.log("New Song:", newSong);
+      setTracks([...tracks, newSong]);
     } catch (error) {
       console.error(error);
     }
   };
+
+  console.log(tracks)
 
 
   return (
@@ -69,7 +81,7 @@ const Home = () => {
               <div>
                 <p>{item.song_name}</p>
                 <p>{item.artist}</p>
-                <button onClick={handleAdd}> add </button>
+                <button onClick={() => handleAdd(item)}>add</button>
               </div>
             </li>
           ))}

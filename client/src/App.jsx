@@ -9,7 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 
 function App() {
-
+  const [tracks, setTracks] = useState([]);
   return (
     <>
       <nav>
@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route element={<PrivateRoutes redirectTo="/login" />}>
-          <Route path="/" element={<HomePage/>}/>
+          <Route path="/" element={<HomePage tracks = {tracks} setTracks={setTracks}/>}/>
           <Route path ="/profile" element={<ProfilePage />} />
       
         </Route>
