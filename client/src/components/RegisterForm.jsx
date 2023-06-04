@@ -1,26 +1,23 @@
 import { useAuth } from "../contexts/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 
 const RegisterForm = () => {
   const { register } = useAuth();
-  const [isRegistered, setIsRegistered] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     const fields = Object.fromEntries(new FormData(e.target));
     try {
       await register(fields);
-      setIsRegistered(true);
+      navigate("/")
     } catch (err) {
       console.log(err);
     }
   };
 
-  if (isRegistered) {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <form onSubmit={handleRegister}>

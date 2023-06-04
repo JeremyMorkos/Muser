@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
+import FindFriends from "./FindFriends";
 import Logout from "./Logout";
 
 const Home = ({setTracks, tracks}) => {
-  const { user } = useAuth();
+  const { user, isLoadingUser } = useAuth();
   const [category, setCategory] = useState("track");
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState([]);
@@ -17,7 +18,8 @@ const Home = ({setTracks, tracks}) => {
     setCategory(event.target.value);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (event) => {
+    event.preventDefault()
     try {
       const response = await fetch(`/api/search?q=${searchInput}`);
       const data = await response.json();
@@ -36,13 +38,7 @@ const Home = ({setTracks, tracks}) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...song,
-          spotifyId: song.spotify_id,
-          artist: song.artist,
-          songName: song.song_name,
-          albumImg: song.album_img,
-        }),
+        body: JSON.stringify(song),
       });
       const newSong = await response.json();
       console.log("New Song:", newSong);
@@ -52,34 +48,41 @@ const Home = ({setTracks, tracks}) => {
     }
   };
 
-  console.log(tracks)
+  console.log(user)
 
 
   return (
     <>
       <h1>Search songs</h1>
-      <Logout />
-      <p>{user.display_name}</p>
 
-      <div>
+      {user && (
+        <>
+          <p>Logged in: {user.displayName}</p>
+          <Logout />
+          <FindFriends />
+        </>
+      )}
+
+
+      <form onSubmit={handleSearch}>
         <input
           type="text"
           value={searchInput}
           onChange={handleSearchInputChange}
         />
-        <select onChange={handleCategoryChange}>
+        <select value={category} onChange={handleCategoryChange}>
           <option value="track">Track</option>
         </select>
-        <button onClick={handleSearch}>Search</button>
-      </div>
+        <button type="submit">Search</button>
+      </form>
 
       {searchData && (
         <ul>
           {searchData.map((item) => (
             <li key={item.id}>
-              <img src={item.album_img} alt={item.song_name} />
+              <img src={item.albumImg} alt={item.songName} />
               <div>
-                <p>{item.song_name}</p>
+                <p>{item.songName}</p>
                 <p>{item.artist}</p>
                 <button onClick={() => handleAdd(item)}>add</button>
               </div>

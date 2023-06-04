@@ -8,10 +8,10 @@ const db = require("./db/index");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const logger = require('./middleware/httpLogger')
-const errorHandler = require('./middleware/httpLogger')
+const logger = require("./middleware/httpLogger");
+const errorHandler = require("./middleware/httpLogger");
 
-const sessionsController = require("./controllers/sessions")
+const sessionsController = require("./controllers/sessions");
 const usersController = require("./controllers/users");
 const songsController = require("./controllers/songs");
 const searchController = require("./controllers/search");
@@ -32,13 +32,13 @@ app.use(
 app.use(express.json());
 app.use(express.static("client"));
 
-app.use(logger)
-app.use('/api/sessions', sessionsController)
+app.use(logger);
+app.use("/api/sessions", sessionsController);
 app.use("/api/users", usersController);
 app.use("/api/songs", songsController);
 app.use("/api/search", searchController);
 app.use("/api/friends", friendsController);
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`server is listening on port:${PORT}`);

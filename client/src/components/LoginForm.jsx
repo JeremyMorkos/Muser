@@ -1,5 +1,6 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
+
 
 const LoginForm = () => {
   const { login, user } = useAuth();
@@ -9,14 +10,12 @@ const LoginForm = () => {
     const fields = Object.fromEntries(new FormData(e.target));
     try{
         await login(fields)
+        navigate("/")
     }catch(err){
         console.log(err)
     }
   };
 
-  if(user){
-    return <Navigate to={"/"} />
-  }
 
   return (
     <form onSubmit={ handleSubmit }>

@@ -32,16 +32,15 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify(fields),
     })
-    const data = await res.json();
+    const user = await res.json();
     if (res.status !== 201) {
       throw {
         status: res.status,
         message: data.message,
       };
     }
-    console.log(data)
-    setUser(data);
-    navigate('/login')
+    console.log(user)
+    setUser(user);
   };
 
   const login = async (fields) => {
@@ -53,15 +52,15 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(fields),
     });
 
-    const data = await res.json();
+    const user = await res.json();
     if (res.status !== 200) {
       throw {
         status: res.status,
         message: data.message,
       };
     }
-    console.log(data)
-    setUser(data);
+    console.log(user)
+    setUser(user);
     setIsLoadingUser(false)
     navigate('/')
   };
@@ -75,7 +74,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoadingUser, login, logout, register }}>
+    <AuthContext.Provider value={{ user, setUser, isLoadingUser, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
