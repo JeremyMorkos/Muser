@@ -8,9 +8,10 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import { useAuth } from "./contexts/AuthProvider";
 
+
 function App() {
-  const [tracks, setTracks] = useState([]);
   const { user } = useAuth();
+
   return (
     <>
       <nav>
@@ -32,7 +33,7 @@ function App() {
         <Route element={<PrivateRoutes redirectTo="/login" />}>
           <Route
             path="/"
-            element={<HomePage tracks={tracks} setTracks={setTracks} />}
+            element={<HomePage />}
           />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>

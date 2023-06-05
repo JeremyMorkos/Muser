@@ -19,7 +19,7 @@ router.delete("/", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { email, password, displayName } = req.body;
+  const { email, password, displayName, bio } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email or password is missing" });
@@ -37,11 +37,12 @@ router.post("/", (req, res, next) => {
         return res.status(400).json({ error: "Invalid email or password" });
       }
 
-      const { id, email, display_name } = user;
+      const { id, email, display_name, bio } = user;
       const loggedInUser = {
         id,
         email,
         displayName: display_name,
+        bio,
       };
       delete loggedInUser.password_hash;
       req.session.user = loggedInUser;

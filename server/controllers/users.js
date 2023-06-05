@@ -18,7 +18,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { user } = req.session;
   const { email, displayName, bio, password, passwordCheck } = req.body;
 
   if (!email || !displayName || !password || !passwordCheck) {
@@ -52,15 +51,15 @@ router.post("/", (req, res, next) => {
         bio,
         password
       };
-      delete newUser.password;
+ 
       req.session.user = newUser;
       return res.status(201).json(newUser);
     });
   });
 });
 
-router.put("/", (req, res, next) => {
-  const id = req.session.user.id;
+router.put("/:id", (req, res, next) => {
+  const id = req.params.id
   const { email, displayName, bio, password, passwordCheck } = req.body;
 
 

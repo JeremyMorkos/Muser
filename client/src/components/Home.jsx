@@ -30,6 +30,8 @@ const Home = ({setTracks, tracks}) => {
     }
   };
 
+  console.log(user)
+
   const handleAdd = async (song) => {
     try {
       console.log("Adding song:", song);
@@ -43,12 +45,15 @@ const Home = ({setTracks, tracks}) => {
       const newSong = await response.json();
       console.log("New Song:", newSong);
       setTracks([...tracks, newSong]);
+
     } catch (error) {
       console.error(error);
     }
   };
 
-  console.log(user)
+  console.log(tracks)
+
+
 
 
   return (

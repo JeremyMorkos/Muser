@@ -8,23 +8,16 @@ export const usePlaylist = () => {
 };
 
 export const PlaylistProvider = ({ children }) => {
-  const [playlist, setPlaylist] = useState([]);
+  const [tracks, setTracks] = useState([]);
   const { user, setUser } = useAuth();
 
+ 
   const fetchUserPlaylist = async () => {
     const response = await fetch(`/api/songs/${user.id}`);
-    const playlist = await response.json();
-    setPlaylist(playlist);
- 
+    const tracks = await response.json();
+    setTracks(tracks);
+    setUser({...user, tracks})
   };
-
-
-  // useEffect(() => {
-  //   if (user) {
-  //     fetchUserPlaylist();
-  //   }
-  // }, [user]);
-
 
 
 

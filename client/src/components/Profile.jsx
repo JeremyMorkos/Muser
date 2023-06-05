@@ -2,23 +2,28 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePlaylist } from "../contexts/PlaylistProvider";
-
+import EditProfile from "../components/EditProfile";
 
 const Profile = () => {
   const { user } = useAuth();
-  const { fetchUserPlaylist, playlist } = usePlaylist();
-
-  // const [userPlaylist, setUserplayList] = useState([])
+  const { fetchUserPlaylist } = usePlaylist();
 
 
-console.log(user)
- 
+useEffect(() => {
+  const getPlaylist = async () => {
+    await fetchUserPlaylist();
+  }
+  getPlaylist();
+}, []);
+
+
 
 
   return (
     <div>
       <h1>Profile page</h1>
-    
+      <EditProfile />
+
       <h4>Playlist</h4>
 
       <ul>
@@ -35,6 +40,5 @@ console.log(user)
     </div>
   );
 };
-
 
 export default Profile;
