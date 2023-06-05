@@ -17,15 +17,8 @@ const retrieveToken = async () => {
 };
 
 router.get("/token", async (req, res) => {
-  const response = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
-  });
-  const token = await response.json();
-  return token
+  const token = await retrieveToken();
+  res.json({ token: token.access_token });
 });
 
 router.get("/", async (req, res) => {
@@ -58,6 +51,5 @@ router.get("/", async (req, res) => {
 
   return res.json(newResult);
 });
-
 
 module.exports = router;

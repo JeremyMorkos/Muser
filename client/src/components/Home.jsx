@@ -3,12 +3,11 @@ import { useAuth } from "../contexts/AuthProvider";
 // import FindFriends from "./FindFriends";
 import Logout from "./Logout";
 
-const Home = ({setTracks, tracks}) => {
+const Home = ({ setTracks, tracks }) => {
   const { user, isLoadingUser } = useAuth();
   const [category, setCategory] = useState("track");
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState([]);
-
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -19,7 +18,7 @@ const Home = ({setTracks, tracks}) => {
   };
 
   const handleSearch = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
       const response = await fetch(`/api/search?q=${searchInput}`);
       const data = await response.json();
@@ -29,8 +28,6 @@ const Home = ({setTracks, tracks}) => {
       console.error(error);
     }
   };
-
-  console.log(user)
 
   const handleAdd = async (song) => {
     try {
@@ -45,16 +42,10 @@ const Home = ({setTracks, tracks}) => {
       const newSong = await response.json();
       console.log("New Song:", newSong);
       setTracks([...tracks, newSong]);
-
     } catch (error) {
       console.error(error);
     }
   };
-
-  console.log(tracks)
-
-
-
 
   return (
     <>
@@ -67,7 +58,6 @@ const Home = ({setTracks, tracks}) => {
           {/* <FindFriends /> */}
         </>
       )}
-
 
       <form onSubmit={handleSearch}>
         <input

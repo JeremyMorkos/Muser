@@ -2,7 +2,6 @@ import { useAuth } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-
 const RegisterForm = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -12,12 +11,11 @@ const RegisterForm = () => {
     const fields = Object.fromEntries(new FormData(e.target));
     try {
       await register(fields);
-      navigate("/")
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
-
 
   return (
     <form onSubmit={handleRegister}>

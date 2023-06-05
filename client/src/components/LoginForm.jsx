@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthProvider";
 
 const LoginForm = () => {
   const { login, user } = useAuth();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
