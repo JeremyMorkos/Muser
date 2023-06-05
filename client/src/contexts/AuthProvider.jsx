@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify(fields),
     })
-    const user = await res.json();
+    const data = await res.json();
     if (res.status !== 201) {
       throw {
         status: res.status,
@@ -40,7 +40,8 @@ export const AuthProvider = ({ children }) => {
       };
     }
     console.log(user)
-    setUser(user);
+    setUser(data);
+    navigate('/')
   };
 
   const login = async (fields) => {
@@ -52,15 +53,15 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(fields),
     });
 
-    const user = await res.json();
+    const data = await res.json();
     if (res.status !== 200) {
       throw {
         status: res.status,
         message: data.message,
       };
     }
-    console.log(user)
-    setUser(user);
+    // onsole.log(user[0])
+    setUser(data);
     setIsLoadingUser(false)
     navigate('/')
   };

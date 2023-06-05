@@ -8,7 +8,8 @@ router.get("/", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ message: "Not logged in" });
   }
-  res.json({ user });
+
+  res.json(user);
 });
 
 router.delete("/", (req, res) => {
@@ -40,7 +41,7 @@ router.post("/", (req, res, next) => {
       const loggedInUser = {
         id,
         email,
-        displayName: display_name
+        displayName: display_name,
       };
       delete loggedInUser.password_hash;
       req.session.user = loggedInUser;

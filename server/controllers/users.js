@@ -18,6 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
+  const { user } = req.session;
   const { email, displayName, bio, password, passwordCheck } = req.body;
 
   if (!email || !displayName || !password || !passwordCheck) {
@@ -51,7 +52,9 @@ router.post("/", (req, res, next) => {
         bio,
         password
       };
-      res.status(201).json(newUser);
+      delete newUser.password;
+      req.session.user = newUser;
+      return res.status(201).json(newUser);
     });
   });
 });

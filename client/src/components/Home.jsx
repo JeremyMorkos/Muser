@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
-import FindFriends from "./FindFriends";
+// import FindFriends from "./FindFriends";
 import Logout from "./Logout";
 
 const Home = ({setTracks, tracks}) => {
@@ -59,7 +59,7 @@ const Home = ({setTracks, tracks}) => {
         <>
           <p>Logged in: {user.displayName}</p>
           <Logout />
-          <FindFriends />
+          {/* <FindFriends /> */}
         </>
       )}
 
