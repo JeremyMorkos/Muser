@@ -18,11 +18,17 @@ const addFriends = (userId, friendDisplayName) => {
   WHERE u.display_name = $1
   RETURNING id, friend_id, user_id;
 `;
-return db.query(sql, [friendDisplayName, userId])
-.then((result) => result.rows[0]);
+  return db
+    .query(sql, [friendDisplayName, userId])
+    .then((result) => result.rows[0]);
+};
+
+const deleteFriend = (userId, friendId) => {
+  return db.query("DELETE FROM friends WHERE user_id = $1 AND friend_id = $2 RETURNING *;", [userId, friendId]);
 };
 
 module.exports = {
   getAllFriends,
   addFriends,
+  deleteFriend
 };

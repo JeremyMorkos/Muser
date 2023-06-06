@@ -13,9 +13,9 @@ export const PlaylistProvider = ({ children }) => {
   const [token, setToken] = useState();
 
   const fetchAccessToken = async () => {
-    const response = await fetch("/api/search/token");
+    const response = await fetch("/api/search/usertoken");
     const token = await response.json();
-    setToken(token);
+    return token.token;
   };
 
   const fetchUserPlaylist = async () => {
@@ -38,7 +38,9 @@ export const PlaylistProvider = ({ children }) => {
   };
 
   return (
-    <PlaylistContext.Provider value={{ fetchUserPlaylist, deleteSong, fetchAccessToken }}>
+    <PlaylistContext.Provider
+      value={{ fetchUserPlaylist, deleteSong, fetchAccessToken }}
+    >
       {children}
     </PlaylistContext.Provider>
   );

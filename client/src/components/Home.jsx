@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
-// import FindFriends from "./FindFriends";
 import Logout from "./Logout";
 
 const Home = ({ setTracks, tracks }) => {
@@ -41,11 +40,11 @@ const Home = ({ setTracks, tracks }) => {
       });
       const newSong = await response.json();
       console.log("New Song:", newSong);
-      setTracks([...tracks, newSong]);
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <>

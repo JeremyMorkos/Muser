@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
     loginCheck();
   }, []);
 
+
   const register = async (fields) => {
     const res = await fetch("/api/users", {
       method: "POST",
@@ -82,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         message: data.message,
       };
     }
-    setUser({ ...user, ...newFields });
+    setUser({ ...user, ...updatedUser });
     console.log(updatedUser);
   };
 

@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+const request = require("request");
+const redirect_uri = "http://localhost:5173/api/search/callback";
+const querystring = require("querystring");
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
@@ -51,5 +54,69 @@ router.get("/", async (req, res) => {
 
   return res.json(newResult);
 });
+
+// Add a new endpoint that simply returns req.session.user.token
+router.get("/usertoken" , async (req,res) =>{
+  return res.json({token: req.session.user.token})
+})
+
+// https://community.spotify.com/t5/Spotify-for-Developers/Adding-scope-to-Client-credentials-calls/td-p/5447360
+// https://developer.spotify.com/documentation/web-api/tutorials/code-flow
+
+// 1. authorize endpoint which redirects to Spotify
+router.get("/authorise", async (req, res) => {
+  // const state = generateRandomString(16);
+  const scope = "user-read-private user-read-email streaming";
+  res.redirect(
+    "https://accounts.spotify.com/authorize?" +
+      querystring.stringify({
+        response_type: "code",
+        client_id: CLIENT_ID,
+        scope: scope,
+        redirect_uri: redirect_uri,
+        // state: state,
+      })
+  );
+});
+
+router.get("/callback", async (req, res) => {
+  console.log('Callback hit');
+
+  // get the 'code' from the query params
+  const code = req.query.code || null;
+
+  // if (state === null) {
+  //   res.redirect('/#' +
+  //     querystring.stringify({
+  //       error: 'state_mismatch'
+  //     }));
+  // } else {
+  const authOptions = {
+    url: "https://accounts.spotify.com/api/token",
+    form: {
+      code: code,
+      redirect_uri: redirect_uri,
+      grant_type: "authorization_code",
+    },
+    headers: {
+      Authorization:
+        "Basic " +
+        new Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
+    },
+    json: true,
+    // };
+  };
+  request.post(authOptions, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      const access_token = body.access_token;
+      req.session.user.token = access_token;
+      return res.redirect('http://localhost:5173/profile');
+    }
+  });
+
+});
+
+
+/// todo later: Link/Unlink account buttons
 
 module.exports = router;

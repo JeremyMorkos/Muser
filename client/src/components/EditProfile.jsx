@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthProvider";
 const EditProfile = () => {
   const { user, updateUser, setUser } = useAuth();
   const [showPopup, setShowPopup] = useState(false);
-  const [fields, setFields] = useState({
+  const [editfields, setEditFields] = useState({
     ...user,
   });
 
@@ -19,11 +19,11 @@ const EditProfile = () => {
 
   const handleEditSubmit = async (event) => {
     event.preventDefault();
-    updateUser(fields);
+    updateUser(editfields);
   };
 
   const handleChangeProfile = (event) => {
-    setFields({ ...fields, [event.target.name]: event.target.value });
+    setEditFields({ ...editfields, [event.target.name]: event.target.value });
   };
 
  
@@ -40,20 +40,20 @@ const EditProfile = () => {
               <input
                 type="text"
                 name="email"
-                value={fields.email}
+                value={editfields.email}
                 onChange={handleChangeProfile}
                 placeholder="Email"
               />
               <input
                 type="text"
                 name="displayName"
-                value={fields.displayName}
+                value={editfields.displayName}
                 onChange={handleChangeProfile}
                 placeholder="Display Name"
               />
               <textarea
                 name="bio"
-                value={fields.bio}
+                value={editfields.bio}
                 onChange={handleChangeProfile}
                 placeholder="Bio"
                 rows={6}
@@ -61,14 +61,14 @@ const EditProfile = () => {
               <input
                 type="password"
                 name="password"
-                value={fields.password}
+                value={editfields.password}
                 onChange={handleChangeProfile}
                 placeholder="Password"
               />
               <input
                 type="password"
                 name="passwordCheck"
-                value={fields.passwordCheck}
+                value={editfields.passwordCheck}
                 onChange={handleChangeProfile}
                 placeholder="Confirm Password"
               />
