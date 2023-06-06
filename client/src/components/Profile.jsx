@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import { usePlaylist } from "../contexts/PlaylistProvider";
 import EditProfile from "../components/EditProfile";
 import SpotifyPlayer from "react-spotify-web-playback";
+import FindFriends from "./FindFriends";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ const Profile = () => {
     <div>
       <h1>Profile page</h1>
       <EditProfile />
+      <FindFriends />
       <></>
       <h4>Playlist</h4>
       <ul>

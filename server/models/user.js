@@ -5,8 +5,11 @@ function generateHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 }
 
-const getAllusers = () => {
-  return db.query("SELECT * FROM users;").then((result) => result.rows[0]);
+const getAllUsers = (requestBody) => {
+  const { displayName, userId } = requestBody;
+  return db
+    .query("SELECT id, display_name AS displayName, $2 AS userId FROM users WHERE display_name = $1;", [displayName, userId])
+    .then((result) => result.rows);
 };
 
 const createUser = (email, displayName, bio, password) => {
@@ -49,7 +52,7 @@ const getUserByEmail = (email) => {
 };
 
 module.exports = {
-  getAllusers,
+  getAllUsers,
   createUser,
   updateUserEmail,
   updateUserDisplayName,

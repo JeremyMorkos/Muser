@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const {
-  getAllusers,
+  getAllUsers,
   createUser,
   getUserByEmail,
   updateUserEmail,
@@ -11,9 +11,18 @@ const {
   updateUserPassword,
 } = require("../models/user");
 
-router.get("/", (req, res) => {
-  return getAllusers().then((users) => {
-    res.json(users);
+router.get("/:displayName", (req, res) => {
+  console.log(req.params)
+  const { displayName } = req.params;
+  const userId  = req.session.user.id;
+  const requestBody = {
+    displayName,
+    userId
+  };
+console.log(requestBody)
+  return getAllUsers(requestBody).then((friend) => {
+    res.json(friend);
+    console.log(friend)
   });
 });
 
