@@ -110,6 +110,7 @@ router.get("/callback", async (req, res) => {
     if (!error && response.statusCode === 200) {
       const access_token = body.access_token;
       req.session.user.token = access_token;
+      // console.log("user token in backend" + req.session.user.token)
       return res.redirect('http://localhost:5173/profile');
     }
   });

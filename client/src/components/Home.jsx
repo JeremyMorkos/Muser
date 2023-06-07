@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthProvider";
-import Logout from "./Logout";
+import HomeStyles from './Home.module.css'
 
 const Home = ({ setTracks, tracks }) => {
   const { user, isLoadingUser } = useAuth();
@@ -46,46 +46,55 @@ const Home = ({ setTracks, tracks }) => {
   };
 
 
+
+  
+
+
   return (
-    <>
-      <h1>Search songs</h1>
+    <div className={HomeStyles.homeContainer}>
+      <h1>Songs</h1>
 
-      {user && (
-        <>
-          <p>Logged in: {user.displayName}</p>
-          <Logout />
-          {/* <FindFriends /> */}
-        </>
-      )}
-
-      <form onSubmit={handleSearch}>
+      <form className={HomeStyles.searchForm} onSubmit={handleSearch}>
         <input
+          className={HomeStyles.searchInput}
           type="text"
           value={searchInput}
           onChange={handleSearchInputChange}
         />
-        <select value={category} onChange={handleCategoryChange}>
+        <select
+          className={HomeStyles.searchSelect}
+          value={category}
+          onChange={handleCategoryChange}
+        >
           <option value="track">Track</option>
         </select>
-        <button type="submit">Search</button>
+        <button className={HomeStyles.searchButton} type="submit">
+          Search
+        </button>
       </form>
 
       {searchData && (
-        <ul>
+        <ul className={HomeStyles.searchResults}>
           {searchData.map((item) => (
-            <li key={item.id}>
+            <li className={HomeStyles.resultItem} key={item.id}>
               <img src={item.albumImg} alt={item.songName} />
               <div>
                 <p>{item.songName}</p>
                 <p>{item.artist}</p>
-                <button onClick={() => handleAdd(item)}>add</button>
+                <button
+                  className={HomeStyles.addButton}
+                  onClick={() => handleAdd(item)}
+                >
+                  add
+                </button>
               </div>
             </li>
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 };
+
 
 export default Home;

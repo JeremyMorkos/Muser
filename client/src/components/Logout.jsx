@@ -1,12 +1,13 @@
 import { useAuth } from "../contexts/AuthProvider";
+import NavStyles from './Nav.module.css'
 
 const Logout = () => {
   const { logout } = useAuth();
 
   return (
-    <>
-      <button onClick={logout}>Logout</button>
-    </>
+    <button className={NavStyles.logoutButton} onClick={logout}>
+      Logout
+    </button>
   );
 };
 

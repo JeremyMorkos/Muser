@@ -3,6 +3,9 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
+const cors = require('cors')
+
+
 
 const db = require("./db/index");
 const app = express();
@@ -33,6 +36,9 @@ app.use(express.json());
 app.use(express.static("client"));
 
 app.use(logger);
+app.use(cors({
+  origin: '*',
+}));
 app.use("/api/sessions", sessionsController);
 app.use("/api/users", usersController);
 app.use("/api/songs", songsController);

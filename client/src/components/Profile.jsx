@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import { usePlaylist } from "../contexts/PlaylistProvider";
 import EditProfile from "../components/EditProfile";
@@ -8,6 +9,7 @@ import FindFriends from "./FindFriends";
 
 const Profile = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { fetchUserPlaylist, deleteSong, fetchAccessToken } = usePlaylist();
   const [player, setPlayer] = useState(undefined);
   const [playerToken, setPlayToken] = useState(null);
@@ -17,6 +19,14 @@ const Profile = () => {
   const spotifyId = user.tracks?.[0]?.spotify_id
   const spotifyUri = `spotify:track:${spotifyId}`;
 
+  // useEffect(() => {
+  //   const redirectToAuthorise = () => {
+  //     navigate("/api/search/authorise"); 
+  //   };
+
+  //   redirectToAuthorise();
+  // }, []);
+
   useEffect(() => {
     const getPlaylist = async () => {
       await fetchUserPlaylist();
@@ -24,7 +34,9 @@ const Profile = () => {
     getPlaylist();
   }, []);
 
+
   useEffect(() => {
+
     const fetchToken = async () => {
       const response = await fetch("http://localhost:5173/api/search/usertoken", {
         method: "GET",
@@ -40,8 +52,8 @@ const Profile = () => {
         setPlayToken(data.token);
       }
     };
-
     fetchToken();
+
   }, []);
 
 
