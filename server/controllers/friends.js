@@ -1,12 +1,31 @@
 const express = require("express");
 const router = express.Router();
 
-const { getAllFriends, addFriends, deleteFriend } = require("../models/friend");
+const { getAllFriends,getFriend, addFriends, deleteFriend, getFriendTracks } = require("../models/friend");
 
 router.get("/:userId", (req, res, next) => {
   const { userId } = req.params;
   return getAllFriends(userId).then((friends) => {
     res.json(friends);
+  });
+});
+
+router.get("/:userId/:friendId", (req, res, next) => {
+  const { userId, friendId } = req.params;
+  return Promise.all([getFriend(userId, friendId), getFriendTracks(userId, friendId)]) 
+    .then(([friend, tracks]) => {
+      res.json({friend, tracks} );
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Failed to retrieve friend and tracks." });
+    });
+});
+
+router.get("/:userId/:friendId", (req, res, next) => {
+  const { userId, friendId } = req.params;
+  return getFriend(userId, friendId).then((friend) => {
+    res.json(friend);
   });
 });
 

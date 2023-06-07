@@ -12,17 +12,17 @@ const {
 } = require("../models/user");
 
 router.get("/:displayName", (req, res) => {
-  console.log(req.params)
+  console.log(req.params);
   const { displayName } = req.params;
-  const userId  = req.session.user.id;
+  const userId = req.session.user.id;
   const requestBody = {
     displayName,
-    userId
+    userId,
   };
-console.log(requestBody)
+  console.log(requestBody);
   return getAllUsers(requestBody).then((friend) => {
     res.json(friend);
-    console.log(friend)
+    console.log(friend);
   });
 });
 
@@ -58,68 +58,46 @@ router.post("/", (req, res, next) => {
         email,
         displayName,
         bio,
-        password
+        password,
       };
- 
+
       req.session.user = newUser;
       return res.status(201).json(newUser);
     });
   });
 });
 
-router.put("/:id", (req, res, next) => {
-  const id = req.params.id
-  const { email, displayName, bio, password, passwordCheck } = req.body;
+router.put("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { email, displayName, bio, password, passwordCheck } = req.body;
 
-
-  if (email) {
-    return updateUserEmail(id, email)
-      .then(() => {
-        res.json({ message: "Email updated successfully" });
-      })
-      .catch((err) => {
-        res.status(500).send("Error updating email");
-      });
-  }
-
-
-  if (displayName) {
-    return updateUserDisplayName(id, displayName)
-      .then(() => {
-        res.json({ message: "Display name updated successfully" });
-      })
-      .catch((err) => {
-        res.status(500).send("Error updating display name");
-      });
-  }
-
-
-  if (bio) {
-    return updateUserBio(id, bio)
-      .then(() => {
-        res.json({ message: "Bio updated successfully" });
-      })
-      .catch((err) => {
-        res.status(500).send("Error updating bio");
-      });
-  }
-
-
-  if (password) {
-    if (password !== passwordCheck) {
-      return res.status(400).json({ error: "Password does not match" });
+    console.log(req.session.user);
+    if (email) {
+      await updateUserEmail(id, email);
+      req.session.user.email = email;
     }
-    return updateUserPassword(id, password)
-      .then(() => {
-        res.json({ message: "Password updated successfully" });
-      })
-      .catch((err) => {
-        res.status(500).send("Error updating password");
-      });
+
+    if (displayName) {
+      await updateUserDisplayName(id, displayName);
+      req.session.user.displayName = displayName;
+    }
+
+    if (bio) {
+      await updateUserBio(id, bio);
+      req.session.user.bio = bio;
+    }
+
+    if (password && password === passwordCheck) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      req.session.user.bio = password;
+      await updateUserPassword(id, hashedPassword);
+    }
+
+    res.json({ message: "User updated successfully" });
+  } catch (err) {
+    res.status(500).send("Error updating user");
   }
-
-  res.status(400).send("No valid fields provided for update");
 });
-
 
 module.exports = router;

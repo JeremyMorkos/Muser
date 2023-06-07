@@ -77,12 +77,6 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(newFields),
     });
     const updatedUser = await res.json();
-    if (res.status !== 200) {
-      throw {
-        status: res.status,
-        message: data.message,
-      };
-    }
     setUser({ ...user, ...updatedUser });
     console.log(updatedUser);
   };

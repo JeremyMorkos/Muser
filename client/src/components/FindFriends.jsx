@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthProvider";
+import FriendsProfile from "./FriendsProfile";
 
 const FindFriends = () => {
   const { user } = useAuth();
   const [friendSearch, setFriendSearch] = useState("");
   const [friends, setFriends] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [showFriendProfile, setShowFriendProfile] = useState(false);
   const [showFriendList, setShowFriendList] = useState(false);
 
   const handleFriendSearchInput = (event) => {
@@ -26,12 +29,9 @@ const FindFriends = () => {
     const res = await fetch(`api/friends/${user.id}/${friend.id}`, {
       method: "DELETE",
     });
- 
-      console.log("Friend deleted successfully");
-      setFriends((prevFriends) =>
-        prevFriends.filter((f) => f.id !== friend.id)
-      );
 
+    console.log("Friend deleted successfully");
+    setFriends((prevFriends) => prevFriends.filter((f) => f.id !== friend.id));
   };
 
   const handleFriendSearch = async (event) => {
@@ -44,7 +44,7 @@ const FindFriends = () => {
       console.log(error);
     }
   };
-  console.log(friends)
+
   const connectWithFriend = async (friend) => {
     try {
       const response = await fetch(`/api/friends/${friend.displayname}`, {
@@ -68,11 +68,9 @@ const FindFriends = () => {
     return friends.some((f) => f.userid === friend.friendid);
   };
 
-
   const toggleFriendList = () => {
-    setShowFriendList((prevState) => !prevState); 
+    setShowFriendList((prevState) => !prevState);
   };
-
 
   return (
     <>
@@ -86,18 +84,29 @@ const FindFriends = () => {
             <div key={friend.id}>
               <p>{friend.displayname}</p>
 
-              
               {/* // fix // */}
-              <p>{friend.frienddisplayname}</p> 
+              <p>{friend.frienddisplayname}</p>
               {isFriend(friend) ? (
                 <>
                   <button onClick={() => deleteFriend(friend)}>Delete</button>
-                  <button>View Profile</button>
+                  <button
+                    onClick={() => {
+                      setSelectedFriend(friend.id);
+                      setShowFriendProfile(true);
+                    }}
+                  >
+                    View Profile
+                  </button>
+                  {showFriendProfile && selectedFriend && (
+                    <FriendsProfile friendId={selectedFriend} />
+                  )}
                 </>
               ) : (
                 <>
                   {friend.userid !== user.id && (
-                    <button onClick={() => connectWithFriend(friend)}>Connect</button>
+                    <button onClick={() => connectWithFriend(friend)}>
+                      Connect
+                    </button>
                   )}
                 </>
               )}
@@ -116,6 +125,5 @@ const FindFriends = () => {
     </>
   );
 };
-
 
 export default FindFriends;
