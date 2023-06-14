@@ -1,5 +1,15 @@
-#root, html {
-    background:  #f8d8a8 100%;
+body {
+  background: #590c0c 100%;
+}
+#root{
+  height:100vh;
+  background: linear-gradient(
+    to bottom,
+    #f8d8a8 0%,
+    #ff7d6e 30%,
+    #a03d3d 70%,
+    #590c0c 100%
+  );
   }
   
   body{

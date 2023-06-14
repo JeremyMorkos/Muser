@@ -20,7 +20,7 @@ const RegisterForm = () => {
 
     try {
       await register(fields);
-      navigate("/");
+      navigate("/auth");
     } catch (err) {
       console.log(err);
     }

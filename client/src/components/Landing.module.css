@@ -3,7 +3,7 @@
 .LandingTitle {
   font-family: "Bebas Neue";
   font-size: 200px;
-  text-shadow: 0px 100px 10px rgba(0, 0, 0, 0.4);
+  text-shadow: 0px 20px 10px rgba(0, 0, 0, 0.4);
   animation: fadeIn 1s ease-in-out forwards;
 }
 
@@ -34,13 +34,13 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to bottom,
     #f8d8a8 0%,
     #ff7d6e 30%,
     #a03d3d 70%,
     #590c0c 100%
-  );
+  ); */
 }
 
 .landingContainer p {

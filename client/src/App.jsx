@@ -17,28 +17,29 @@ import LandingPage from "./components/LandingPage";
 import { useAuth } from "./contexts/AuthProvider";
 import Logout from "./components/Logout";
 import NavStyles from "./components/Nav.module.css";
-
-
+import AuthPage from "./pages/AuthPage";
+import FriendsPage from "./pages/FriendsPage";
 
 function App() {
   const { user } = useAuth();
   const location = useLocation();
-  
-//1. when user clicks call api/search/authorise
-//  2. redirect user to spotifies location from response from step 1 - authorise?
-// 3. control goes to spotify, redirect to call back url
-// 4. user should be logged into spotify
 
-  const HandleAuth = async () => {
-    const scope = "user-read-private user-read-email streaming";
-    const client_id = "997a23f18c14403e99efca70ae7550dc";
-    const redirect_uri = "http://localhost:5173/api/search/callback";
-    const queryString = `response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
-    const authorizationUrl = `https://accounts.spotify.com/authorize?${queryString}`;
-  
-    window.location.href = authorizationUrl;
-  }
+  //1. when user clicks call api/search/authorise
+  //  2. redirect user to spotify's location from response from step 1 - authorise?
+  // 3. control goes to spotify, redirect to call back url
+  // 4. user should be logged into spotify
 
+  // const HandleAuth = async () => {
+  //   const scope = "user-read-private user-read-email streaming";
+  //   const client_id = "997a23f18c14403e99efca70ae7550dc";
+  //   const redirect_uri = "http://localhost:5173/api/search/callback";
+  //   const queryString = `response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${encodeURIComponent(
+  //     redirect_uri
+  //   )}`;
+  //   const authorisationUrl = `https://accounts.spotify.com/authorize?${queryString}`;
+
+  //   window.location.href = authorisationUrl;
+  // };
 
   return (
     <div className="app">
@@ -50,6 +51,7 @@ function App() {
               <Logout />
             </div>
           )}
+
           <ul className={NavStyles.navbarLinks}>
             {user && (
               <>
@@ -58,13 +60,34 @@ function App() {
                     <NavLink to="/profile" className={NavStyles.navLink}>
                       Profile 🎧
                     </NavLink>
-                    <button onClick={() => HandleAuth()}>Authorize with Spotify</button>
+                    <NavLink to="/friends" className={NavStyles.navLink}>
+                      Friends 👽
+                    </NavLink>
+                    {/* <button
+                      className={NavStyles.muserButton}
+                      onClick={() => Auth()}
+                    >
+                      Muser Auth
+                    </button> */}
                   </li>
                 ) : null}
                 {location.pathname === "/profile" ? (
                   <li>
                     <NavLink to="/" className={NavStyles.navLink} end>
-                      Home
+                      Home 🏠
+                    </NavLink>
+                    <NavLink to="/friends" className={NavStyles.navLink}>
+                      Friends 👽
+                    </NavLink>
+                  </li>
+                ) : null}
+                {location.pathname === "/friends" ? (
+                  <li>
+                    <NavLink to="/profile" className={NavStyles.navLink}>
+                      Profile 🎧
+                    </NavLink>
+                    <NavLink to="/" className={NavStyles.navLink} end>
+                      Home  🏠
                     </NavLink>
                   </li>
                 ) : null}
@@ -75,11 +98,13 @@ function App() {
       </nav>
       <Routes>
         <Route path="/landing" element={<LandingPage />} />
+        <Route path="/auth" element={<AuthPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route element={<PrivateRoutes redirectTo="/landing" />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/friends" element={<FriendsPage />} />
         </Route>
       </Routes>
     </div>

@@ -94,7 +94,7 @@ router.put("/:id", async (req, res, next) => {
       await updateUserPassword(id, hashedPassword);
     }
 
-    res.json({ message: "User updated successfully" });
+    res.json({ message: "User updated successfully", user: req.session.user  });
   } catch (err) {
     res.status(500).send("Error updating user");
   }

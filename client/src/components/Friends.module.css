@@ -1,0 +1,186 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+
+}
+
+.modalButtonBack {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.modalLi {
+  list-style: none;
+}
+
+.formInput {
+  border-radius: 10px;
+  width: 300px;
+  padding: 12px;
+  margin: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  opacity: 60%;
+  outline: none;
+}
+
+.ModalTitle {
+  font-family: monospace;
+  text-align: center;
+  font-size: 20px;
+  opacity: 60%;
+  color: rgb(0, 0, 0);
+}
+
+.formButton {
+  border-radius: 10px;
+  padding: 8px;
+  width: 100px;
+  height: 45px;
+  margin-top: 10px;
+  font-family: "Bebas Neue", sans-serif;
+  background-color: #1db954;
+  color: rgb(88, 86, 86);
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.titleContainer {
+  /* color: rgb(0, 0, 0);
+  text-decoration: none; */
+  font-family: "Bebas Neue", sans-serif;
+  opacity: 60%;
+  text-align: center;
+  margin: auto;
+  color: #fff;
+  /* font-size: 50px;
+  margin-bottom: 20px; */
+}
+
+.formButton:hover {
+  background-color: #1ee162;
+}
+
+.formWraper {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  color: rgb(88, 86, 86);
+  font-family: monospace;
+  position: absolute;
+  top: 20px;
+}
+
+.friendsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style-type: none;
+  font-family: "Bebas Neue", sans-serif;
+  margin: auto;
+  gap: 20px;
+  padding: 10px;
+
+}
+
+.friendsItem {
+  background-color: white;
+  opacity: 70%;
+  border-radius: 10px;
+}
+
+h3 {
+  text-align: center;
+  font-family: "Bebas Neue", sans-serif;
+  color: rgb(88, 86, 86);
+}
+
+.deleteButton {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 90%;
+  margin: 5px;
+}
+
+.deleteButton:hover {
+  background-color: #cc0000;
+}
+.profileButton {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #ffd700;
+  color: #555555;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 90%;
+  margin: 5px;
+}
+.profileButton:hover {
+  background-color: #e6c823;
+}
+
+.homeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  justify-content: center;
+}
+
+.close {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.close:hover {
+  background-color: #cc0000;
+}

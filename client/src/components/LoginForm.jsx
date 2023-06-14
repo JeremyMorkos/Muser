@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     try {
       await login(fields);
-      navigate("/");
+      navigate("/auth");
     } catch (err) {
       setShowModal(true);
       setErrorMessage("Email or password is incorrect.");
