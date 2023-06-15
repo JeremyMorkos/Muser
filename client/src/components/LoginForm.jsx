@@ -45,23 +45,26 @@ const LoginForm = () => {
           type="email"
           name="email"
           placeholder="Email"
+          data-testid="email-input" 
         />
         <input
           className={FormStyles.formInput}
           type="password"
           name="password"
           placeholder="Password"
+          minLength="8"
         />
         <div className={FormStyles.buttonContainer}>
           <input
             className={FormStyles.formButton}
             type="submit"
             value="Login"
+            name = "LoginSubmit"
           />
           <button className={FormStyles.goBackButton} onClick={handleGoBack}>
             Go Back
           </button>
-        </div>
+        </div> 
       </form>
       {showModal && (
         <div className={FormStyles.modalContainer}>
