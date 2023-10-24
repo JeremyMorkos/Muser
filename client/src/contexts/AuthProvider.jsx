@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const navigate = useNavigate();
 
+  
+// check if a user is logged in when the component loads.
   useEffect(() => {
     const loginCheck = async () => {
       const res = await fetch("/api/sessions");
@@ -21,11 +23,11 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingUser(false);
     };
     setIsLoadingUser(true);
-    navigate("/");
     loginCheck();
   }, []);
 
 
+  // register user  logic to api
   const register = async (fields) => {
     const res = await fetch("/api/users", {
       method: "POST",
@@ -35,17 +37,18 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(fields),
     });
     const data = await res.json();
-    if (res.status !== 201) {
+     if (!res.ok) {
       throw {
         status: res.status,
-        message: data.message,
+        message: data.error,
       };
     }
-    // console.log(user)
+    console.log(user)
     setUser(data);
-    navigate("/");
+   
   };
 
+  // loging user logic to api
   const login = async (fields) => {
     const res = await fetch("/api/sessions", {
       method: "POST",
@@ -56,16 +59,15 @@ export const AuthProvider = ({ children }) => {
     });
 
     const data = await res.json();
-    if (res.status !== 200) {
+    if (!res.ok) {
       throw {
         status: res.status,
-        message: data.message,
+        message: data.error,
       };
     }
-    // console.log(user)
     setUser(data);
     setIsLoadingUser(false);
-    navigate("/");
+    
   };
 
   const updateUser = async (newFields) => {
@@ -77,6 +79,12 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(newFields),
     });
     const updatedUser = await res.json();
+    if (!res.ok) {
+      throw {
+        status: res.status,
+        message: data.error,
+      };
+    }
     setUser({ ...user, ...updatedUser });
     console.log(updatedUser);
   };
@@ -86,6 +94,7 @@ export const AuthProvider = ({ children }) => {
       method: "DELETE",
     });
     setUser(null);
+    navigate("/landing");
   };
 
   return (

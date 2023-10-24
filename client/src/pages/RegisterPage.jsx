@@ -1,4 +1,4 @@
-import RegisterForm from "../components/RegisterForm"
+import RegisterForm from "../components/Register/RegisterForm"
 
 const RegisterPage = () => {
     document.title ="Register"

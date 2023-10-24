@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+.navbar {
+  /* background-color: #000000; */
+  opacity: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.navbarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 10px; 
+  
+}
+
+.liText{
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  font-size: 10px;
+  z-index: 10;
+  font-family: 'Montserrat', sans-serif;
+  vertical-align: center;
+}
+
+
+.userSection {
+  display: flex;
+  align-content: center;
+  align-items: baseline; 
+
+}
+
+.username {
+  margin-right: 10px;
+  padding-top: 20px;
+  margin-left: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color:rgb(0, 0, 0);
+  left:0;
+  margin-left:95px;
+  margin-top:-1.7em;
+  position: absolute;
+  
+}
+
+.navbarLinks {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: bisque;
+  text-decoration: none;
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  width: auto;
+}
+
+.navLink {
+  color:bisque;
+  text-decoration: none;
+  margin-left:20px;
+  margin-right:20px;
+  margin-top: -.5em;
+  padding:20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  border-radius: 10px;
+  transition: box-shadow 0.6s ease;
+  margin:5px;
+ 
+}
+
+.navLink:hover {
+  box-shadow: 0px 10px 20px rgb(0, 0, 0);
+}
+
+.logoutButton {
+  background-color: bisque;
+  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  margin-right:30px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  margin-left: auto;
+  transition: box-shadow 0.6s ease;
+  margin-top: -0.4em;
+  right:0;
+  margin-right:20px;
+  margin-top:-1em;
+  position: absolute;
+}
+
+.logoutButton:hover {
+  box-shadow: 0px 10px 20px rgb(0, 0, 0);
+}
+
+.muserButton {
+  background-color: #1db954;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.muserButton:hover {
+  background-color: #1ed760;
+}
+
+.muserLogo{
+  height: 55px;
+  opacity: 40%;
+  width: auto;
+  left:0;
+  margin-left:20px;
+  margin-top:-1.2em;
+  position: absolute;
+}
+
+
+@media screen and (max-width: 767px){
+
+  .userSection {
+    display: flex;
+    align-content: center;
+    align-items: flex-start;
+    width: auto;
+    justify-content: space-evenly;
+    margin-top: 20px;
+  
+  }
+  
+  .username {
+    margin-right: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: black;
+    margin-top: -2.2em;
+  }
+
+  .muserLogo{
+    height: 60px;
+    opacity: 40%;
+    width: auto;
+    margin-left: 0px;
+    margin-top: -1.8em;
+  }
+
+  .logoutButton {
+    background-color: bisque;
+    color: rgb(0, 0, 0);
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-right:30px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin-left: auto;
+    transition: box-shadow 0.6s ease;
+    margin-top: -0.4em;
+    right:0;
+    margin-right:20px;
+    margin-top:12em;
+    position: absolute;
+  }
+  
+  
+.navbarContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-top: 10px; 
+  margin-left: 0;
+}
+
+}

@@ -1,8 +1,12 @@
-body {
-  background: #590c0c 100%;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
+
 #root{
-  height:100vh;
+
   background: linear-gradient(
     to bottom,
     #f8d8a8 0%,
@@ -10,6 +14,8 @@ body {
     #a03d3d 70%,
     #590c0c 100%
   );
+  min-height: 100%;
+  background-attachment: fixed; 
   }
   
   body{

@@ -13,101 +13,107 @@ import RegisterPage from "./pages/RegisterPage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
-import LandingPage from "./components/LandingPage";
+import LandingPage from "./pages/LandingPage";
 import { useAuth } from "./contexts/AuthProvider";
-import Logout from "./components/Logout";
-import NavStyles from "./components/Nav.module.css";
-import AuthPage from "./pages/AuthPage";
+import Logout from "./components/Logout/Logout";
+import NavStyles from "./components/Nav/Nav.module.css";
 import FriendsPage from "./pages/FriendsPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faHouse,
+  faUsers,
+  faHeadphones,
+} from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css";
+import PlayListPage from "./pages/PlayListPage";
+import Logo from "./components/Logo/Logo";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 function App() {
   const { user } = useAuth();
   const location = useLocation();
 
-  //1. when user clicks call api/search/authorise
-  //  2. redirect user to spotify's location from response from step 1 - authorise?
-  // 3. control goes to spotify, redirect to call back url
-  // 4. user should be logged into spotify
-
-  // const HandleAuth = async () => {
-  //   const scope = "user-read-private user-read-email streaming";
-  //   const client_id = "997a23f18c14403e99efca70ae7550dc";
-  //   const redirect_uri = "http://localhost:5173/api/search/callback";
-  //   const queryString = `response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${encodeURIComponent(
-  //     redirect_uri
-  //   )}`;
-  //   const authorisationUrl = `https://accounts.spotify.com/authorize?${queryString}`;
-
-  //   window.location.href = authorisationUrl;
-  // };
-
   return (
-    <div className="app">
-      <nav className={NavStyles.navbar}>
-        <div className={NavStyles.navbarContainer}>
+    <>
+      <div className="app">
+        <Navbar collapseOnSelect expand="sm" className={NavStyles.navbar}>
           {user && (
-            <div className={NavStyles.userSection}>
-              <p className={NavStyles.username}>Welcome {user.displayName}</p>
-              <Logout />
+            <div className={`container ${NavStyles.navbarContainer}`}>
+              <Navbar.Brand className={`navbar-brand ${NavStyles.userSection}`}>
+                <Logo />
+                <p className={NavStyles.username}>{user.displayName}</p>
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className={`me-auto ${NavStyles.navbarContainer}`}>
+                  <Nav.Link as={Link} to="/" className={NavStyles.navLink}>
+                    <FontAwesomeIcon
+                      icon={faHouse}
+                      size="lg"
+                      style={{ color: "#000000" }}
+                    />{" "}
+                    Home
+                  </Nav.Link>
+                  <Nav.Link
+                    as={Link}
+                    to="/profile"
+                    className={NavStyles.navLink}
+                  >
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      size="lg"
+                      style={{ color: "#000000" }}
+                    />{" "}
+                    Profile
+                  </Nav.Link>
+                  <Nav.Link
+                    as={Link}
+                    to="/friends"
+                    className={NavStyles.navLink}
+                  >
+                    <FontAwesomeIcon
+                      icon={faUsers}
+                      size="lg"
+                      style={{ color: "#000000" }}
+                    />{" "}
+                    Friends
+                  </Nav.Link>
+                  <Nav.Link
+                    as={Link}
+                    to="/playlist"
+                    className={NavStyles.navLink}
+                  >
+                    <FontAwesomeIcon
+                      icon={faHeadphones}
+                      size="lg"
+                      style={{ color: "#000000" }}
+                    />{" "}
+                    Playlist
+                  </Nav.Link>
+                  <Logout />
+                </Nav>
+              </Navbar.Collapse>
             </div>
           )}
+        </Navbar>
 
-          <ul className={NavStyles.navbarLinks}>
-            {user && (
-              <>
-                {location.pathname === "/" ? (
-                  <li>
-                    <NavLink to="/profile" className={NavStyles.navLink}>
-                      Profile 🎧
-                    </NavLink>
-                    <NavLink to="/friends" className={NavStyles.navLink}>
-                      Friends 👽
-                    </NavLink>
-                    {/* <button
-                      className={NavStyles.muserButton}
-                      onClick={() => Auth()}
-                    >
-                      Muser Auth
-                    </button> */}
-                  </li>
-                ) : null}
-                {location.pathname === "/profile" ? (
-                  <li>
-                    <NavLink to="/" className={NavStyles.navLink} end>
-                      Home 🏠
-                    </NavLink>
-                    <NavLink to="/friends" className={NavStyles.navLink}>
-                      Friends 👽
-                    </NavLink>
-                  </li>
-                ) : null}
-                {location.pathname === "/friends" ? (
-                  <li>
-                    <NavLink to="/profile" className={NavStyles.navLink}>
-                      Profile 🎧
-                    </NavLink>
-                    <NavLink to="/" className={NavStyles.navLink} end>
-                      Home  🏠
-                    </NavLink>
-                  </li>
-                ) : null}
-              </>
-            )}
-          </ul>
-        </div>
-      </nav>
-      <Routes>
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route element={<PrivateRoutes redirectTo="/landing" />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/friends" element={<FriendsPage />} />
-        </Route>
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route element={<PrivateRoutes redirectTo="/landing" />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/friends" element={<FriendsPage />} />
+            <Route path="/playlist" element={<PlayListPage />} />
+          </Route>
+        </Routes>
+      </div>
+    </>
   );
 }
 

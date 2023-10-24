@@ -4,12 +4,11 @@ DROP TABLE IF EXISTS friends CASCADE;
 
 CREATE TABLE users (
 id SERIAL PRIMARY KEY,
-email VARCHAR (254) NOT NULL,
-display_name VARCHAR (254) NOT NULL,
+email VARCHAR (254) NOT NULL UNIQUE,
+display_name VARCHAR (254) NOT NULL UNIQUE,
 bio TEXT,
 password_hash TEXT NOT NULL
 );
-
 
 CREATE TABLE songs (
   id SERIAL PRIMARY KEY,
@@ -23,20 +22,6 @@ CREATE TABLE songs (
     FOREIGN KEY(user_id)
     REFERENCES users(id)
 );
-
-
--- CREATE TABLE playlist (
---   id SERIAL PRIMARY KEY,
---   artist VARCHAR(254) NOT NULL, -- Maybe remove?
---   song_name VARCHAR(254) NOT NULL, -- Maybe remove? Replace with song_id
---   album_img TEXT NOT NULL, -- possibly also remove
---   user_id INT,
-  
---   CONSTRAINT fk_playlist_users
---     FOREIGN KEY(user_id)
---     REFERENCES users(id)
--- );
-
 
 CREATE TABLE friends (
   id SERIAL PRIMARY KEY,
@@ -60,3 +45,6 @@ TRUNCATE TABLE friends CASCADE;
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ALTER SEQUENCE songs_id_seq RESTART WITH 1;
 ALTER SEQUENCE friends_id_seq RESTART WITH 1;
+
+
+

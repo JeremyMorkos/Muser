@@ -9,6 +9,7 @@ const {
   updateUserDisplayName,
   updateUserBio,
   updateUserPassword,
+  getUserByDisplayName,
 } = require("../models/user");
 
 router.get("/:displayName", (req, res) => {
@@ -39,20 +40,33 @@ router.post("/", (req, res, next) => {
     return res.status(400).json({ error: "Password does not match" });
   }
 
-  return getUserByEmail(email).then((user) => {
-    if (user) {
-      return res.status(400).json({
-        error: "The email address is already used by an existing user",
-      });
-    }
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ error: "Password must be at least 8 characters long" });
+  }
 
-    if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: "Password must be at least 8 characters long" });
-    }
+  return getUserByEmail(email)
+    .then((userEmail) => {
+      console.log(userEmail);
+      if (userEmail) {
+        throw "The email address is not available";
+      }
 
-    return createUser(email, displayName, bio, password).then((result) => {
+      return getUserByDisplayName(displayName);
+    })
+    .then((userDisplayName) => {
+      console.log(userDisplayName);
+      if (userDisplayName) {
+        throw "The username is not available";
+      }
+
+      console.log("creating user");
+      return createUser(email, displayName, bio, password);
+    })
+    .then((result) => {
+      console.log(`Created user ${result}`);
+
       const newUser = {
         id: result.rows[0].id,
         email,
@@ -62,9 +76,15 @@ router.post("/", (req, res, next) => {
       };
 
       req.session.user = newUser;
-      return res.status(201).json(newUser);
+      res.status(201).json(newUser);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+
+      res.status(400).json({
+        error: err,
+      });
     });
-  });
 });
 
 router.put("/:id", async (req, res, next) => {
@@ -94,7 +114,7 @@ router.put("/:id", async (req, res, next) => {
       await updateUserPassword(id, hashedPassword);
     }
 
-    res.json({ message: "User updated successfully", user: req.session.user  });
+    res.json({ message: "User updated successfully", user: req.session.user });
   } catch (err) {
     res.status(500).send("Error updating user");
   }

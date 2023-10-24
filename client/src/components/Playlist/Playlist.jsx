@@ -1,34 +1,40 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthProvider";
-import { usePlaylist } from "../contexts/PlaylistProvider";
-import EditProfile from "../components/EditProfile";
+import { useAuth } from "../../contexts/AuthProvider";
+import { usePlaylist } from "../../contexts/PlaylistProvider";
+import EditProfile from "../Profile/EditProfile";
 import SpotifyPlayer from "react-spotify-web-playback";
-import ProfileStyles from "./Profile.module.css";
-import FriendsStyle from "./Friends.module.css";
-import HomeStyle from "./Home.module.css";
+import ProfileStyles from "../Profile/Profile.module.css";
+import FriendsStyle from "../Friends/Friends.module.css";
+import HomeStyle from "../Home/Home.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlay,
+  faArrowRotateLeft,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-const Profile = () => {
+const Playlist = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { fetchUserPlaylist, deleteSong, fetchAccessToken } = usePlaylist();
-  const [player, setPlayer] = useState(undefined);
+  const [player, setPlayer] = useState(null);
   const [playerToken, setPlayToken] = useState(null);
   const [spotifyURI, setSpotifyUri] = useState([]);
   const [play, setPlay] = useState(false);
 
+  // Assign the value of the first track's Spotify ID in the user's playlist.
   const spotifyId = user.tracks?.[0]?.spotify_id;
+
+  // Construct the Spotify URI for playing a specific track using its Spotify ID
   const spotifyUri = `spotify:track:${spotifyId}`;
 
-  // useEffect(() => {
-  //   const redirectToAuthorise = () => {
-  //     navigate("/api/search/authorise");
-  //   };
-
-  //   redirectToAuthorise();
-  // }, []);
-
+  // when playlist component is mounted display the users playlist.
   useEffect(() => {
     const getPlaylist = async () => {
       await fetchUserPlaylist();
@@ -36,6 +42,7 @@ const Profile = () => {
     getPlaylist();
   }, []);
 
+  // spotify api call to fetch the usertoken.
   useEffect(() => {
     const fetchToken = async () => {
       const response = await fetch(
@@ -48,9 +55,7 @@ const Profile = () => {
           credentials: "include",
         }
       );
-
       const data = await response.json();
-
       if (data.token) {
         setPlayToken(data.token);
       }
@@ -58,6 +63,7 @@ const Profile = () => {
     fetchToken();
   }, []);
 
+  // once usertoken is validated mount the spotify webplayer.
   useEffect(() => {
     const musicPlayer = async () => {
       const playerToken = await fetchAccessToken();
@@ -67,7 +73,7 @@ const Profile = () => {
       document.body.appendChild(script);
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
-          name: "Web Playback SDK",
+          name: "Muser",
           getOAuthToken: (cb) => {
             cb(playerToken);
           },
@@ -95,19 +101,22 @@ const Profile = () => {
   }, []);
 
   const handlePlay = () => {
-    setPlay(true);
+    debugger;
     if (player) {
-      player.resume();
+      player.resume().then(() => {
+        setPlay(true);
+      });
     }
   };
 
   const handlePause = () => {
-    setPlay(false);
+    debugger;
     if (player) {
-      player.pause();
+      player.pause().then(() => {
+        setPlay(false);
+      });
     }
   };
-
   const handleVolumeChange = (value) => {
     if (playerRef.current) {
       playerRef.current.setVolume(value);
@@ -117,12 +126,16 @@ const Profile = () => {
   return (
     <>
       <div className={ProfileStyles.profileContainer}>
-        <EditProfile />
+        <h1 className={ProfileStyles.titleContainer}> Playlist</h1>
         <div className={ProfileStyles.spotifyPlayerContainer}>
           <SpotifyPlayer
             token={playerToken}
             uris={[spotifyURI]}
             play={play}
+            SpPlaybackP
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onVolumeChange={handleVolumeChange}
             callback={(state) => {
               if (!state.isPlaying) {
                 setPlay(false);
@@ -140,7 +153,7 @@ const Profile = () => {
               showPlayIcon: true,
               allowContextMenu: true,
               initialVolume: 0.8,
-              height: "150px",
+              height: "100px",
               width: "100%",
               view: "coverart",
               theme: "black",
@@ -148,38 +161,39 @@ const Profile = () => {
           />
         </div>
       </div>
-      <div className={FriendsStyle.titleContainer}>
-        <h2>My Playlist</h2>
-      </div>
-      <div className={HomeStyle.resultContainer}>
-        <ul className={HomeStyle.searchResults}>
+      <Container>
+        <Row>
           {user.tracks &&
             user.tracks.map((track) => (
-              <>
-                <li className={HomeStyle.resultItem} key={track.id}>
-                  <div className={HomeStyle.resultItemContent}>
-                    <p>{track.artist}</p>
-                    <img src={track.album_img} alt="" />
-                    <p>{track.song_name}</p>
-                    <button     className={FriendsStyle.deleteButton} onClick={() => deleteSong(track.id)}>
-                      Delete song
+              <Col sm={true} className={HomeStyle.resultItem} key={track.id}>
+                <div className={HomeStyle.resultItemContent}>
+                  <h5>{track.artist}</h5>
+                  <img src={track.album_img} alt="album_art" />
+                  <p>{track.song_name}</p>
+                  <div className={FriendsStyle.profileBtnContainer}>
+                    <button
+                      className={FriendsStyle.deleteButton}
+                      onClick={() => deleteSong(track.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} size="lg" />
                     </button>
                     <button
-                     className={FriendsStyle.profileButton}
+                      className={FriendsStyle.playButton}
                       onClick={() => {
                         setSpotifyUri(`spotify:track:${track.spotify_id}`);
                         setPlay(true);
                       }}
                     >
-                      Play song
+                      <FontAwesomeIcon icon={faPlay} size="lg" />
                     </button>
                   </div>
-                </li>
-              </>
+                </div>
+              </Col>
             ))}
-        </ul>
-      </div>
+        </Row>
+      </Container>
     </>
   );
 };
-export default Profile;
+
+export default Playlist;

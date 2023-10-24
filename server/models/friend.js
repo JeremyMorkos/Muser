@@ -1,5 +1,12 @@
 const db = require("../db/index");
 
+// These aren't models from an MVC perspective
+
+/*
+  id,
+  dislay_name
+*/
+
 const getAllFriends = (userId) => {
   const sql = `
     SELECT u.id, u.display_name AS friendDisplayName 
@@ -12,7 +19,7 @@ const getAllFriends = (userId) => {
 
 const getFriend = (userId, friendId) => {
   const sql = `
-    SELECT u.id, u.display_name AS friendDisplayName 
+    SELECT u.id, u.display_name  AS friendDisplayName, u.bio AS friendBio
     FROM friends AS f
     JOIN users AS u ON f.friend_id = u.id
     WHERE f.user_id = $1 AND f.friend_id = $2;
@@ -43,9 +50,11 @@ const getFriendTracks = (userId, friendId) => {
   return db.query(sql, [userId, friendId]).then((result) => result.rows);
 };
 
-
 const deleteFriend = (userId, friendId) => {
-  return db.query("DELETE FROM friends WHERE user_id = $1 AND friend_id = $2 RETURNING *;", [userId, friendId]);
+  return db.query(
+    "DELETE FROM friends WHERE user_id = $1 AND friend_id = $2 RETURNING *;",
+    [userId, friendId]
+  );
 };
 
 module.exports = {
@@ -53,5 +62,5 @@ module.exports = {
   getFriend,
   addFriends,
   getFriendTracks,
-  deleteFriend
+  deleteFriend,
 };

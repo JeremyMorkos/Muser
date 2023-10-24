@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthProvider";
-import FormStyles from "./Form.module.css";
+import { useAuth } from "../../contexts/AuthProvider";
+import FormStyles from "../Register/Form.module.css";
 
 const LoginForm = () => {
   const { login, user } = useAuth();
@@ -9,29 +9,30 @@ const LoginForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  //form function to login a user - check the database to see if user exists and if email and password are valid.
   const handleSubmit = async (e) => {
     e.preventDefault();
     const fields = Object.fromEntries(new FormData(e.target));
-
     if (!fields.email || !fields.password) {
       setShowModal(true);
       setErrorMessage("Email or password is missing.");
       return;
     }
-
     try {
       await login(fields);
-      navigate("/auth");
+      navigate("/profile");
     } catch (err) {
       setShowModal(true);
       setErrorMessage("Email or password is incorrect.");
     }
   };
 
+  // close error message.
   const closeModal = () => {
     setShowModal(false);
   };
 
+  // back to landing page.
   const handleGoBack = () => {
     navigate("/landing");
   };
@@ -45,7 +46,7 @@ const LoginForm = () => {
           type="email"
           name="email"
           placeholder="Email"
-          data-testid="email-input" 
+          data-testid="email-input"
         />
         <input
           className={FormStyles.formInput}
@@ -59,19 +60,19 @@ const LoginForm = () => {
             className={FormStyles.formButton}
             type="submit"
             value="Login"
-            name = "LoginSubmit"
+            name="LoginSubmit"
           />
           <button className={FormStyles.goBackButton} onClick={handleGoBack}>
-            Go Back
+            Back
           </button>
-        </div> 
+        </div>
       </form>
       {showModal && (
         <div className={FormStyles.modalContainer}>
           <div className={FormStyles.modalContent}>
             <p>{errorMessage}</p>
             <button className={FormStyles.modalButton} onClick={closeModal}>
-              Go Back
+              Back
             </button>
           </div>
         </div>

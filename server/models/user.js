@@ -15,6 +15,8 @@ const getAllUsers = (requestBody) => {
 const createUser = (email, displayName, bio, password) => {
   const password_hash = generateHash(password);
   const sql = `INSERT INTO users (email, display_name, bio, password_hash) VALUES ($1, $2, $3, $4) RETURNING id; `;
+  
+  console.log('executing db query');
   return db.query(sql, [email, displayName, bio, password_hash]);
 };
 
@@ -39,6 +41,18 @@ const updateUserPassword = (id, password) => {
   return db.query(sql, [id, password_hash]);
 };
 
+const getUserByDisplayName = (displayName) => {
+  return db
+    .query("SELECT * FROM users WHERE display_name = $1", [displayName])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return null;
+      } else {
+        return result.rows[0];
+      }
+    });
+}
+
 const getUserByEmail = (email) => {
   return db
     .query("SELECT * FROM users WHERE email = $1", [email])
@@ -59,4 +73,5 @@ module.exports = {
   updateUserBio,
   updateUserPassword,
   getUserByEmail,
+  getUserByDisplayName,
 };

@@ -1,9 +1,13 @@
-import Profile from "../components/Profile"
+import EditProfile from "../components/Profile/EditProfile";
 
-const ProfilePage = () =>{
-    document.title = "Profile"
-
-    return <Profile/>
-}
+const ProfilePage = () => {
+  document.title = "Profile";
+  return (
+    <>
+  <EditProfile />
+  
+  </>
+  )
+};
 
 export default ProfilePage

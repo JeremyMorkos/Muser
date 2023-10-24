@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthProvider";
+import { useAuth } from "../../contexts/AuthProvider";
+import Button from "react-bootstrap/Button";
 import HomeStyles from "./Home.module.css";
-import "../index.css";
+import FriendsStyle from "../Friends/Friends.module.css";
+import "../../index.css";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const Home = ({ setTracks, tracks }) => {
   const { user, isLoadingUser } = useAuth();
@@ -9,27 +15,46 @@ const Home = ({ setTracks, tracks }) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchData, setSearchData] = useState([]);
   const [addedSongs, setAddedSongs] = useState([]);
+  const [showErrModal, setShowErrModal] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
+  // retrieve the value of the change event for the form.
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
   };
 
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
+  // search for music through the form the value of the form input.
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`/api/search?q=${searchInput}`);
+      const response = await fetch(
+        `/api/search?q=${searchInput}&type=${category}`
+      );
       const data = await response.json();
-      setSearchData(data);
-      console.log(data);
+      if (response.ok) {
+        setSearchData(data);
+      } else {
+        setShowErrModal(true);
+        setErrMsg(data.error);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  // set error message if search fails.
+  const openErrModal = () => {
+    setErrMsg(errMsg);
+    setShowErrModal(true);
+  };
+
+  // close error message.
+  const closeErrModal = () => {
+    setShowErrModal(false);
+    setSearchInput("");
+  };
+
+  //add new songs and update the users playlist
   const handleAdd = async (song) => {
     try {
       console.log("Adding song:", song);
@@ -54,54 +79,61 @@ const Home = ({ setTracks, tracks }) => {
         <h1 className={HomeStyles.titleContainer} h1>
           Muser
         </h1>
-
         <form className={HomeStyles.searchForm} onSubmit={handleSearch}>
           <input
-            placeholder="Search for songs"
+            placeholder="Search for music"
             className={HomeStyles.searchInput}
             type="text"
             value={searchInput}
             onChange={handleSearchInputChange}
           />
-          <select
-            className={HomeStyles.searchSelect}
-            value={category}
-            onChange={handleCategoryChange}
-          >
-            <option value="track">Track</option>
-          </select>
           <button className={HomeStyles.searchButton} type="submit">
             Search
           </button>
         </form>
       </div>
+      {showErrModal && (
+        <div className={FriendsStyle.modal}>
+          <div className={FriendsStyle.modalContent}>
+            <p className={FriendsStyle.friendNameDelete}>{errMsg}</p>
+            <div className={FriendsStyle.confirmDelete}>
+              <button
+                className={FriendsStyle.modalButtonBack}
+                onClick={closeErrModal}
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {searchData && (
-        <div className={HomeStyles.resultContainer}>
-          <ul className={HomeStyles.searchResults}>
+        <Container>
+          <Row>
             {searchData.map((item) => {
               const isAdded = addedSongs.some(
                 (song) => song.spotifyId === item.spotifyId
               );
               return (
-                <li className={HomeStyles.resultItem} key={item.id}>
+                <Col sm={true} className={HomeStyles.resultItem} key={item.id}>
                   <div className={HomeStyles.resultItemContent}>
-                    <p>{item.artist}</p>
+                    <h5>{item.artist}</h5>
                     <img src={item.albumImg} alt={item.songName} />
                     <p>{item.songName}</p>
+                    {!isAdded && (
+                      <button
+                        className={HomeStyles.addButton}
+                        onClick={() => handleAdd(item)}
+                      >
+                        Add to Playlist
+                      </button>
+                    )}
                   </div>
-                  {!isAdded && (
-                    <button
-                      className={HomeStyles.addButton}
-                      onClick={() => handleAdd(item)}
-                    >
-                      add
-                    </button>
-                  )}
-                </li>
+                </Col>
               );
             })}
-          </ul>
-        </div>
+          </Row>
+        </Container>
       )}
     </>
   );
