@@ -39,6 +39,8 @@ const Auth = () => {
           {user.email} is now linked to spotify.
         </p>
       ) : (
+        <div className={AuthStyles.linkAcc}>
+        <p className={AuthStyles.linkText}>Link your spotify account to listen to music on Muser</p>
         <button
           className={AuthStyles.containerButton}
           onClick={() => {
@@ -47,6 +49,7 @@ const Auth = () => {
         >
           Link Spotify Account
         </button>
+        </div>
       )}
     </div>
   );

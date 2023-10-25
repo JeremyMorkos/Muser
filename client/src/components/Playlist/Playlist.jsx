@@ -7,7 +7,7 @@ import EditProfile from "../Profile/EditProfile";
 import SpotifyPlayer from "react-spotify-web-playback";
 import ProfileStyles from "../Profile/Profile.module.css";
 import FriendsStyle from "../Friends/Friends.module.css";
-import HomeStyle from "../Home/Home.module.css";
+import HomeStyle from "../Search/Home.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -23,7 +23,7 @@ const Playlist = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { fetchUserPlaylist, deleteSong, fetchAccessToken } = usePlaylist();
-  const [player, setPlayer] = useState(null);
+  const [player, setPlayer] = useState(undefined);
   const [playerToken, setPlayToken] = useState(null);
   const [spotifyURI, setSpotifyUri] = useState([]);
   const [play, setPlay] = useState(false);
@@ -87,12 +87,9 @@ const Playlist = () => {
           setPlayToken(playerToken);
 
           const state = await player.getCurrentState();
-          console.log("Current State", state);
         });
 
-        player.addListener("not_ready", ({ device_id }) => {
-          console.log("Device ID has gone offline", device_id);
-        });
+        player.addListener("not_ready", ({ device_id }) => {});
 
         player.connect();
       };
@@ -101,7 +98,6 @@ const Playlist = () => {
   }, []);
 
   const handlePlay = () => {
-    debugger;
     if (player) {
       player.resume().then(() => {
         setPlay(true);
@@ -110,7 +106,6 @@ const Playlist = () => {
   };
 
   const handlePause = () => {
-    debugger;
     if (player) {
       player.pause().then(() => {
         setPlay(false);

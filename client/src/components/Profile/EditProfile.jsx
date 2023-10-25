@@ -35,7 +35,7 @@ const EditProfile = () => {
 
   return (
     <div className={ProfileStyles.profileContainer}>
-      <h2 className={ProfileStyles.titleContainer}>Edit Profile</h2>
+      <h2 className={ProfileStyles.titleContainer}>Profile</h2>
       <Auth />
       <form className={ProfileStyles.formWraper} onSubmit={handleEditSubmit}>
         <div className={ProfileStyles.formGroup}>
@@ -60,7 +60,7 @@ const EditProfile = () => {
         </div>
         <div className={ProfileStyles.formGroup}>
           <textarea
-            className={ProfileStyles.formInput}
+            className={ProfileStyles.formTextarea}
             name="bio"
             value={editFields.bio}
             onChange={handleChangeProfile}

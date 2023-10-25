@@ -19,6 +19,7 @@ const retrieveToken = async () => {
   return token;
 };
 
+
 router.get("/token", async (req, res) => {
   const token = await retrieveToken();
   res.json({ token: token.access_token });
@@ -27,7 +28,6 @@ router.get("/token", async (req, res) => {
 router.get("/", async (req, res) => {
   const userSearch = req.query.q;
   const userToken = await retrieveToken(); // Spotify application token obtained using client credentials flow
-   
   const response = await fetch(
       `https://api.spotify.com/v1/search?q=${userSearch}&type=${
         req.query.type || "track"
@@ -54,13 +54,12 @@ router.get("/", async (req, res) => {
       }));
       res.json(newResult);
     } else {
-      // request url, response status, response body
-      console.log("An error occurred"); // more information
+      console.log("An error occurred"); 
       res.status(500).json({ error: "Something went wrong." });
   } 
 });
 
-// Add a new endpoint that simply returns req.session.user.token
+
 router.get("/usertoken", async (req, res) => {
   return res.json({ token: req.session.user.token });
 });
@@ -78,7 +77,7 @@ router.get("/authorise", async (req, res) => {
         client_id: CLIENT_ID,
         scope: scope,
         redirect_uri: redirect_uri,
-        // state: state,
+        
       })
   );
 });
@@ -109,6 +108,8 @@ router.get("/callback", async (req, res) => {
     }
   });
 });
+
+
 
 /// todo later: Link/Unlink account buttons
 

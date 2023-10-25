@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
 import { usePlaylist } from "../../contexts/PlaylistProvider";
 import FriendsStyle from "./Friends.module.css";
-import HomeStyle from "../Home/Home.module.css";
+import HomeStyle from "../Search/Home.module.css";
 import ProfileStyle from "../Profile/Profile.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";

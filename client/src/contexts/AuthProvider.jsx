@@ -43,7 +43,6 @@ export const AuthProvider = ({ children }) => {
         message: data.error,
       };
     }
-    console.log(user)
     setUser(data);
    
   };
@@ -86,7 +85,7 @@ export const AuthProvider = ({ children }) => {
       };
     }
     setUser({ ...user, ...updatedUser });
-    console.log(updatedUser);
+    
   };
 
   const logout = async (id) => {

@@ -11,7 +11,7 @@ import "./index.css";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PrivateRoutes from "./components/PrivateRoutes";
-import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
 import ProfilePage from "./pages/ProfilePage";
 import LandingPage from "./pages/LandingPage";
 import { useAuth } from "./contexts/AuthProvider";
@@ -24,6 +24,7 @@ import {
   faHouse,
   faUsers,
   faHeadphones,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PlayListPage from "./pages/PlayListPage";
@@ -52,11 +53,11 @@ function App() {
                 <Nav className={`me-auto ${NavStyles.navbarContainer}`}>
                   <Nav.Link as={Link} to="/" className={NavStyles.navLink}>
                     <FontAwesomeIcon
-                      icon={faHouse}
+                      icon={faMagnifyingGlass}
                       size="lg"
                       style={{ color: "#000000" }}
                     />{" "}
-                    Home
+                    Search
                   </Nav.Link>
                   <Nav.Link
                     as={Link}
@@ -106,7 +107,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route element={<PrivateRoutes redirectTo="/landing" />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<SearchPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/friends" element={<FriendsPage />} />
             <Route path="/playlist" element={<PlayListPage />} />

@@ -9,7 +9,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Home = ({ setTracks, tracks }) => {
+const Search = ({ setTracks, tracks }) => {
   const { user, isLoadingUser } = useAuth();
   const [category, setCategory] = useState("track");
   const [searchInput, setSearchInput] = useState("");
@@ -57,7 +57,6 @@ const Home = ({ setTracks, tracks }) => {
   //add new songs and update the users playlist
   const handleAdd = async (song) => {
     try {
-      console.log("Adding song:", song);
       const response = await fetch("/api/songs", {
         method: "POST",
         headers: {
@@ -66,7 +65,6 @@ const Home = ({ setTracks, tracks }) => {
         body: JSON.stringify(song),
       });
       const newSong = await response.json();
-      console.log("New Song:", newSong);
       setAddedSongs([...addedSongs, newSong]);
     } catch (error) {
       console.error(error);
@@ -139,4 +137,4 @@ const Home = ({ setTracks, tracks }) => {
   );
 };
 
-export default Home;
+export default Search;

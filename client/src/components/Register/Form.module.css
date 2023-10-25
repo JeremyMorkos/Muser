@@ -44,6 +44,7 @@
   border-radius: 10px;
   padding: 12px;
   margin-top: 10px;
+  width: 100px;
   background-color: #ffd700;
   color: rgb(88, 86, 86);
   border: none;
@@ -106,6 +107,7 @@
   font-size: 16px;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
+  width: 100px;
 }
 
 
